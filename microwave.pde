@@ -1,240 +1,244 @@
-int x = 0, mX = 0, mY = 0, st = 0,ct = 0, msg = 0;
-String message = "Hello";
-boolean doorStatus = false;
+// Program to demonstrate microwave interface using processing.
+// Name: Hardik Poudel
+// Class: CS 4331-006 Spring 2021 Special Topics in Computer Science: Human Computer Interaction.
 
-color keypad = color(215,234,240);
-color outerLayer = color(0);
-color numbers = color(0);
-color lighton = color(211,216,66);
-color lightoff = color(170,170,161);
-color utilities = color(112,125,134);
-color door = color(166,182,193);
-color numberpad = color(87);
 
-int choice = -1;
-PImage img;
-PImage power;
+
+
+int st =0, ct =0, turn = 0, timer = 0, num = -1, j = 0;
+boolean doorOpen = false, powerOn = false, running = false, start = false;
+
+color lightOn = color(198,142,28);
+color lightOff= color(124,114,95);
+
+PImage user_interface, openbutton, closebutton;
+
+String message = "";
+String choice = "";
 
 void setup(){
-  size(1200,900);
-  st = millis()/1000;
+  size(1200, 900);
   smooth();
-  img = loadImage("chicken.jpg");
-  power = loadImage("power.png");
-  frameRate(300);
+  user_interface = loadImage("interface.png");
+  openbutton = loadImage("open.png");
+  closebutton = loadImage("Close.png");
 }
 
 void draw(){
   background(255);
-  fill(outerLayer);
-  rect(50,50,1080,830); //outer layer
+  st = second();
   
-  if(x == 0){
-    fill(lightoff);
-  }else{
-     
-    fill(lighton);
+  //////////////////////////////////////////////////////////////////INTERFACE////////////////////////////////////////
+  fill(127);
+  rect(50,60,1100,870); //outerlay
+  if(running == false){
+    fill(lightOff);
+  }
+   else{
+     fill(lightOn);
+   }
+  rect(80,80,1045,500);  //food box;
+  
+  strokeWeight(30);
+  stroke(#4D3C34);
+  line(80,80,1120,80); //hinge
+  line(80,80,80-turn,580-turn); // left
+  line(1120,80,1120+turn,580-turn); // right
+  line(80-turn,580-turn,1120+turn,580-turn); //down
+  stroke(0);
+  strokeWeight(10);
+
+  image(user_interface, 100,600);
+  user_interface.resize(1000,300);
+  
+  fill(72,185,36);
+  textSize(26);
+  text(message, 120,670);
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  
+/////////////////////////////////////DOOR SETUP///////////////////////////////////////////////
+  if(doorOpen == false){
+    image(openbutton, 945,765);
+    openbutton.resize(120,120);
+  }
+  else{
+    image(closebutton, 945,765);
+    closebutton.resize(120,120);
+  }
+  
+///////////////////////////////MOVE DOOR////////////////////////////////////
+  if(doorOpen == true && turn < 300){
+    turn ++;
     
+  }else if(doorOpen == false && turn > 0){
+    turn --;
   }
-  
-  
  
-  rect(90,80, 1000,500); // box
-  
-  
-  fill(numberpad);
-  rect(500,600,185,280);
-  
-  //keypad
-  fill(keypad);
-  rect(520,680,40,40);
-  rect(570,680,40,40);
-  rect(620,680,40,40);
-  rect(520,730,40,40);
-  rect(570,730,40,40);
-  rect(620,730,40,40);
-  rect(520,780,40,40);
-  rect(570,780,40,40);
-  rect(620,780,40,40);
-  rect(570,830,40,40);
-  
-  
-  rect(900,700,160,100);  //open/close
-  
-  fill(utilities);
-  rect(100,620,200,250);
-  
-  //utilities
-  fill(keypad);
-  ellipse(150,660,80,50);
-  ellipse(150,720,80,50);
-  ellipse(150,780,80,50);
-  ellipse(150,840,80,50);
-  ellipse(250,660,80,50);
-  ellipse(250,720,80,50);
-  ellipse(250,780,80,50);
-  ellipse(250,840,80,50);
-  
-  
-  circle(780,670,70);  //Start
-  circle(780,750,70);  //Stop
-  circle(780,830,70);  //30s
-  
-  fill(0);
-  rect(500,590,180,80);  //display
-  
-  if(doorStatus == true){
-    image(img, 230,180, 600,330);
-  
-  }
-  
-  
-  
-  
-  strokeWeight(45);
-  stroke(#A6B6C1);
-  line(90,80,1085,80); //hinge
-  line(90,80, 90-x,580-x); //left
-  line(1085,80,1085+x,580-x); //right
-  line(90-x,580-x,1085+x,580-x);  //down
-  strokeWeight(1);
-  
-  fill(90,183,30);
-  textSize(32);
-  text(message, 510,640);
-  fill(255);
-  
-  
-  
-  fill(numbers);
-  text("1", 525,715);
-  text("2", 575, 715);
-  text("3", 625,715);
-  text("4", 525,765);
-  text("5", 575, 765);
-  text("6", 625,765);
-  text("7", 525,815);
-  text("8", 575, 815);
-  text("9", 625,815);
-  text("0", 575, 865);
-  
-  textSize(20);
-  text("Start", 757,675);
-  text("Stop", 757, 755);
-  text("30s", 757, 835);
-  textSize(16);
-  text("Popcorn", 112,665);
-  text("Potato", 215,665);
-  text("Defrost", 112, 725);
-  text("Pizza", 220,725);
-  text("Beverage", 112,783);
-  text("Fn1", 215, 783);
-  text("Fn2", 130, 840);
-  text("Fn3", 220,845);
-  
-  image(power, 350,700,100,100);
-  
-  message = String.valueOf(hour()) + ":" + String.valueOf(minute()) + ":" + String.valueOf(second());
-  
-  textSize(32);
- if(doorStatus == false){
-   text("Open", 940, 755);
- }else{
-   text("Close", 940, 755);
+ if(turn > 0){
+   running = true;
+ }else if(turn == 0 && start == false){
+   running = false;
  }
   
-  if(doorStatus == true && x < 300){
-    x++;
-  }else if(doorStatus == false && x > 0){
-    x--;
-  }
-  
-  if(choice >= 0 && choice <9 && msg >0){
-    
-   message = String.valueOf(msg);
-   
-  }
-  if(choice == 11){
-    startTimer(msg*60);
-    
-  }
-  if(choice == 12){
-    st = millis()/1000;
-  }
-  if(choice == 13){
-    startTimer(30);
-  }
-  
-  
-  
  
   
-}
-
-void startTimer(int n){
-  ct = millis()/1000 - st;
-  if(n-ct > 0){
-    message = String.valueOf(n-ct) + "s rem";
+  ///////////////////////////////////////////////TIMER SETUP///////////////////////////////////////////////////////
+  
+  if(powerOn == true){
+    
+    if(start == true && timer > 0){
+         timer = startTimer(timer);
+       }
+       else{
+        
+         if(choice.equals("time") && timer > 0){
+           message = String.valueOf(timer);
+         }else{
+            message = choice;
+         }
+       }
+     
+    
+    
   }else{
-    message = "Ready";
-    msg = 0;
+    message = "OFF";
+    choice = "";
+    timer = 0;
   }
   
+
+
+    
+  if(choice.equals("clock")){
+    message = String.valueOf(hour()) + ":" + String.valueOf(minute()) + ":" + String.valueOf(second());
+  }
+  
+  if(choice.equals("stop")){
+    reset();
+    }
+  
+  if(choice.equals("30s")){
+    start = true;
+   timer = startTimer(timer);
+  }
+  
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
+
 
 void mousePressed(){
- mX = mouseX;
- mY = mouseY;
- 
- if(mX >= 900 && mX < 1060 && mY >=700 && mY < 800){
-   choice = 10;  //open/close
-   doorStatus ^= true;
- }
- if(mX >= 520 && mX < 560 && mY >= 680 && mY < 720){
-   choice = 1;
- }
-  if(mX >= 570 && mX < 610 && mY >= 680 && mY < 720){
-   choice = 2;
- }
- if(mX >= 620 && mX < 660 && mY >= 680 && mY < 720){
-   choice = 3;
- }
- if(mX >= 520 && mX < 560 && mY >= 730 && mY < 770){
-   choice = 4;
- }
-  if(mX >= 570 && mX < 610 && mY >= 730 && mY < 770){
-   choice = 5;
- }
- if(mX >= 620 && mX < 660 && mY >= 730 && mY < 770){
-   choice = 6;
- }
-  if(mX >= 520 && mX < 560 && mY >= 780 && mY < 820){
-   choice = 7;
- }
-  if(mX >= 570 && mX < 610 && mY >= 780 && mY < 820){
-   choice = 8;
- }
- if(mX >= 620 && mX < 660 && mY >= 780 && mY < 820){
-   choice = 9;
- }
- if(mX >= 570 && mX < 610 && mY >= 830 && mY < 870){
-   choice = 0;
- }
- 
- if(mX >= 745 && mX < 815 && mY >= 635 && mY < 705){
-   choice = 11; //Start
- }
- if(mX >= 745 && mX < 815 && mY >= 715 && mY < 785){
-   choice = 12; //Stop
-   msg = 0;
+  
+  println(mouseX, mouseY);
+  if(mouseX >= 140 && mouseX <270 && mouseY >= 730 && mouseY < 875){
+    choice = "on";
+    powerOn ^= true;
+  }
+  
+  if(mouseX >=400 && mouseX <435 && mouseY >=635 && mouseY < 685){
+    choice = "popcorn";
+    timer = 120;
+  }
+  if(mouseX >=470 && mouseX <540 && mouseY >=635 && mouseY < 710){
+    choice = "pizza";
+    timer = 240;
+  }
+  if(mouseX >=375 && mouseX <440 && mouseY >= 755 && mouseY <790){
+    choice = "potato";
+    timer = 180;
+  }
+  if(mouseX >= 475 && mouseX <530 && mouseY >= 715 && mouseY <795){
+    choice = "beverage";
+    timer = 90;
+  }
+  
+  if(mouseX >=375 && mouseX <430 && mouseY >= 800 && mouseY <875){
+    choice = "defrost";
+    timer = 300;
+  }
+  
+  if(mouseX >= 475 && mouseX <530 && mouseY >= 804 && mouseY < 870){
+    choice = "clock";
+  }
+  
+  if(mouseX >= 675 && mouseX <720 && mouseY >=650 && mouseY <690){
+    choice = "time";
+    timer = timer*10+1;
+  }
+  if(mouseX >= 740 && mouseX <780 && mouseY >=645 && mouseY <690){
+    choice = "time";
+    timer = timer*10+2;
+  }
+  if(mouseX >= 800 && mouseX <845 && mouseY >=645 && mouseY <690){
+    choice = "time";
+    timer = timer*10+3;
+  }
+  if(mouseX >= 680 && mouseX <722 && mouseY >=710 && mouseY <750){
+    choice = "time";
+    timer = timer*10+4;
+  }
+  if(mouseX >= 740 && mouseX <785 && mouseY >=710 && mouseY <750){
+    choice = "time";
+    timer = timer*10+5;
+  }
+  if(mouseX >= 805 && mouseX <850 && mouseY >=710 && mouseY <750){
+    choice = "time";
+    timer = timer*10+6;
+  }
+  if(mouseX >= 680 && mouseX <722 && mouseY >=770 && mouseY <810){
+    choice = "time";
+    timer = timer*10+7;
+  }
+   if(mouseX >= 740 && mouseX <785 && mouseY >=774 && mouseY <810){
+    choice = "time";
+    timer = timer*10+8;
+  }
+  if(mouseX >= 805 && mouseX <845 && mouseY >=765 && mouseY <810){
+    choice = "time";
+    timer = timer*10+9;
+  }
+   if(mouseX >= 740 && mouseX <785 && mouseY >=825 && mouseY <865){
+   choice = "time";
+    timer = timer*10+0;
+  }
+   if(mouseX >= 930 && mouseX <985 && mouseY >=640 && mouseY <695){
+    start = true;
+  }
+   if(mouseX >= 1015 && mouseX <1074 && mouseY >=640 && mouseY <690){
+    choice = "stop";
+    
+  }
+   if(mouseX >= 970 && mouseX <1025 && mouseY >=708 && mouseY <760){
+    choice = "30s";
+    timer = 30;
+  }
+   if(mouseX >= 955 && mouseX <1055 && mouseY >=775 && mouseY <885){
+    choice = "door";
+    doorOpen ^= true;
+  }
    
- }
- if(mX >= 745 && mX < 815 && mY >= 795 && mY < 865){
-   choice = 13; //30s
- }
- if(choice >=0 && choice <10){
-   msg = msg*10 +choice;
- }
- 
- 
+}
+
+int startTimer(int n){
+  if(st > j){
+    message = choice + '\n' + String.valueOf(timer) + "s rem";  
+    n -= 1;
+    running = true;
+  }
+  if(n == 0){
+    choice = "READY";
+    start = false;
+    running = false;
+  }
+  j = st;
+  return n;
+}
+
+void reset(){
+ choice = "";
+ timer = 0;
+ running = false;
+ start = false;
 }
