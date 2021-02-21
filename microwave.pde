@@ -11,61 +11,101 @@ boolean doorOpen = false, powerOn = false, running = false, start = false;
 color lightOn = color(198,142,28);
 color lightOff= color(124,114,95);
 
-PImage user_interface, openbutton, closebutton;
+PImage user_interface, user_interfaceon, openbutton, closebutton, food, pizza, potato, popcorn, broc;
 
 String message = "";
 String choice = "";
 
 void setup(){
-  size(1200, 900);
+  size(1690, 900);
   smooth();
   user_interface = loadImage("interface.png");
+
   openbutton = loadImage("open.png");
   closebutton = loadImage("Close.png");
+  pizza = loadImage("pizza.png");
+  potato = loadImage("potato.png");
+  popcorn = loadImage("popcorn.png");
+  broc = loadImage("food.png");
 }
+
+
 
 void draw(){
   background(255);
   st = second();
   
   //////////////////////////////////////////////////////////////////INTERFACE////////////////////////////////////////
+  
+  
+  
   fill(127);
-  rect(50,60,1100,870); //outerlay
+  rect(300,60,1100,870); //outerlay
+  
+   if(choice.equals("popcorn")){
+     food = popcorn;
+   }
+   else if(choice.equals("pizza")){
+     food = pizza;
+   }
+   else if(choice.equals("potato")){
+     food = potato;
+   }
+   else if(choice.equals("")){
+     food = broc;
+   }
+
+  
+  
+  
+  
   if(running == false){
     fill(lightOff);
   }
    else{
      fill(lightOn);
    }
-  rect(80,80,1045,500);  //food box;
+   rect(300,80,1100,500);  //food box;
+  
+  if(doorOpen == true){
+    
+  image(food, 300,80);
+  food.resize(1100,500);
+  
+  } 
+  
   
   strokeWeight(30);
-  stroke(#4D3C34);
-  line(80,80,1120,80); //hinge
-  line(80,80,80-turn,580-turn); // left
-  line(1120,80,1120+turn,580-turn); // right
-  line(80-turn,580-turn,1120+turn,580-turn); //down
+  stroke(#0A1324);
+  line(300,80,1400,80); //hinge
+  line(300,80,300-turn,580-turn); // left
+  line(1400,80,1400+turn,580-turn); // right
+  line(300-turn,580-turn,1400+turn,580-turn); //down
   stroke(0);
   strokeWeight(10);
 
-  image(user_interface, 100,600);
-  user_interface.resize(1000,300);
+  image(user_interface, 300,600);
+  user_interface.resize(1100,300);
   
   fill(72,185,36);
   textSize(26);
-  text(message, 120,670);
+  text(message, 365,660);
   /////////////////////////////////////////////////////////////////////////////////////////////////////
   
   
 /////////////////////////////////////DOOR SETUP///////////////////////////////////////////////
   if(doorOpen == false){
-    image(openbutton, 945,765);
+    image(openbutton, 1225,765);
     openbutton.resize(120,120);
   }
   else{
-    image(closebutton, 945,765);
+    image(closebutton, 1225,765);
     closebutton.resize(120,120);
   }
+  
+  
+
+  
   
 ///////////////////////////////MOVE DOOR////////////////////////////////////
   if(doorOpen == true && turn < 300){
@@ -87,7 +127,7 @@ void draw(){
   
   if(powerOn == true){
     
-    if(start == true && timer > 0){
+    if(start == true && timer > 0 && doorOpen == false){
          timer = startTimer(timer);
        }
        else{
@@ -129,96 +169,110 @@ void draw(){
 }
 
 
-void mousePressed(){
+//int[] X = new int[4];
+//int[] Y = new int[4];
+//int xsz = 0 , ysz = 0;
+
+
   
+void mousePressed(){
+  //X[xsz++] = mouseX;
+  //Y[ysz++] = mouseY;
+  
+  //if(xsz==4){
+  // println("REES", min(X), max(X), min(Y), max(Y)); 
+  //}
+  
+
   println(mouseX, mouseY);
-  if(mouseX >= 140 && mouseX <270 && mouseY >= 730 && mouseY < 875){
+  if(mouseX >= 350 && mouseX <488 && mouseY >= 741 && mouseY < 877){
     choice = "on";
     powerOn ^= true;
   }
   
-  if(mouseX >=400 && mouseX <435 && mouseY >=635 && mouseY < 685){
+  
+  if(mouseX >=590 && mouseX <675 && mouseY >=640 && mouseY < 715){
     choice = "popcorn";
     timer = 120;
   }
-  if(mouseX >=470 && mouseX <540 && mouseY >=635 && mouseY < 710){
+  if(mouseX >=710 && mouseX <775 && mouseY >=645 && mouseY < 715){
     choice = "pizza";
     timer = 240;
   }
-  if(mouseX >=375 && mouseX <440 && mouseY >= 755 && mouseY <790){
+  if(mouseX >=715 && mouseX <780 && mouseY >= 730 && mouseY <795){
     choice = "potato";
     timer = 180;
   }
-  if(mouseX >= 475 && mouseX <530 && mouseY >= 715 && mouseY <795){
+  if(mouseX >= 600 && mouseX <650 && mouseY >= 815 && mouseY <875){
     choice = "beverage";
     timer = 90;
   }
   
-  if(mouseX >=375 && mouseX <430 && mouseY >= 800 && mouseY <875){
+  if(mouseX >=595 && mouseX <650 && mouseY >= 740 && mouseY <805){
     choice = "defrost";
     timer = 300;
   }
   
-  if(mouseX >= 475 && mouseX <530 && mouseY >= 804 && mouseY < 870){
+  if(mouseX >= 710 && mouseX <780 && mouseY >= 810 && mouseY < 870){
     choice = "clock";
   }
   
-  if(mouseX >= 675 && mouseX <720 && mouseY >=650 && mouseY <690){
+  if(mouseX >= 935 && mouseX <980 && mouseY >=650 && mouseY <695){
     choice = "time";
     timer = timer*10+1;
   }
-  if(mouseX >= 740 && mouseX <780 && mouseY >=645 && mouseY <690){
+  if(mouseX >= 1005 && mouseX <1050 && mouseY >=650 && mouseY <690){
     choice = "time";
     timer = timer*10+2;
   }
-  if(mouseX >= 800 && mouseX <845 && mouseY >=645 && mouseY <690){
+  if(mouseX >= 1075  && mouseX <1125 && mouseY >=650 && mouseY <690){
     choice = "time";
     timer = timer*10+3;
   }
-  if(mouseX >= 680 && mouseX <722 && mouseY >=710 && mouseY <750){
+  if(mouseX >= 940 && mouseX <985 && mouseY >=710 && mouseY <755){
     choice = "time";
     timer = timer*10+4;
   }
-  if(mouseX >= 740 && mouseX <785 && mouseY >=710 && mouseY <750){
+  if(mouseX >= 1010 && mouseX <1050 && mouseY >=710 && mouseY <750){
     choice = "time";
     timer = timer*10+5;
   }
-  if(mouseX >= 805 && mouseX <850 && mouseY >=710 && mouseY <750){
+  if(mouseX >= 1075 && mouseX <1125 && mouseY >=715 && mouseY <750){
     choice = "time";
     timer = timer*10+6;
   }
-  if(mouseX >= 680 && mouseX <722 && mouseY >=770 && mouseY <810){
+  if(mouseX >= 940 && mouseX <985 && mouseY >=775 && mouseY <805){
     choice = "time";
     timer = timer*10+7;
   }
-   if(mouseX >= 740 && mouseX <785 && mouseY >=774 && mouseY <810){
+   if(mouseX >= 1010 && mouseX <1050 && mouseY >=770 && mouseY <815){
     choice = "time";
     timer = timer*10+8;
   }
-  if(mouseX >= 805 && mouseX <845 && mouseY >=765 && mouseY <810){
+  if(mouseX >= 1075 && mouseX <1120 && mouseY >=770 && mouseY <810){
     choice = "time";
     timer = timer*10+9;
   }
-   if(mouseX >= 740 && mouseX <785 && mouseY >=825 && mouseY <865){
+   if(mouseX >= 1010 && mouseX <1050 && mouseY >=830 && mouseY <865){
    choice = "time";
     timer = timer*10+0;
   }
-   if(mouseX >= 930 && mouseX <985 && mouseY >=640 && mouseY <695){
+   if(mouseX >= 1215 && mouseX <1270 && mouseY >=640 && mouseY <690){
     start = true;
   }
-   if(mouseX >= 1015 && mouseX <1074 && mouseY >=640 && mouseY <690){
+   if(mouseX >= 1315 && mouseX <1370 && mouseY >=640 && mouseY <690){
     choice = "stop";
     
   }
-   if(mouseX >= 970 && mouseX <1025 && mouseY >=708 && mouseY <760){
+   if(mouseX >= 1260 && mouseX <1320 && mouseY >=710 && mouseY <755){
     choice = "30s";
     timer = 30;
   }
-   if(mouseX >= 955 && mouseX <1055 && mouseY >=775 && mouseY <885){
+   if(mouseX >= 1240 && mouseX <1330 && mouseY >=780 && mouseY <880){
     choice = "door";
     doorOpen ^= true;
   }
-   
+   println(choice);
 }
 
 int startTimer(int n){
