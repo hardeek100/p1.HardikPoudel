@@ -22,14 +22,12 @@ body{
 
 #olddesign{
     display: inline-block;
-    margin-left: 100px;
-    margin-right: auto;
+   margin: auto;
 }
 
 #currentdesign{
     display: block;
-  margin-left: 100px;
-  margin-right: auto;
+    margin: auto;
   
   
 }
