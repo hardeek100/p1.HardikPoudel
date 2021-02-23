@@ -22,12 +22,22 @@ body{
 
 #olddesign{
     display: inline-block;
+<<<<<<< HEAD
    margin: auto;
+=======
+    margin-left: 50px;
+    margin-right: auto;
+>>>>>>> 6e40ef220c10e98a2a3fe2b042834f93c7fc1f77
 }
 
 #currentdesign{
     display: block;
+<<<<<<< HEAD
     margin: auto;
+=======
+  margin-left: 50px;
+  margin-right: auto;
+>>>>>>> 6e40ef220c10e98a2a3fe2b042834f93c7fc1f77
   
   
 }
