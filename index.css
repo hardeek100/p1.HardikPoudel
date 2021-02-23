@@ -1,5 +1,5 @@
 body{
-    background-color: darkolivegreen;
+    background-color: #e7e6e1;
 }
 
 #container{
@@ -7,10 +7,11 @@ body{
   width: 70%;
   border: 3px solid purple;
   padding: 30px;
+  background-color: #f7f6e7;
 }
 
 #container2{
-    border-style: dotted;
+    
     align-items: center;
    
 }
@@ -20,10 +21,9 @@ body{
 }
 
 #olddesign{
-    display: block;
+    display: inline-block;
     margin-left: 100px;
     margin-right: auto;
-    
 }
 
 #currentdesign{
